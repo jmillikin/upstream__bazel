@@ -293,6 +293,15 @@ alias(
     actual = "@maven//:org_checkerframework_checker_qual",
 )
 
+java_library(
+    name = "chicory",
+    exports = [
+        "@maven//:com_dylibso_chicory_log",
+        "@maven//:com_dylibso_chicory_runtime",
+        "@maven//:com_dylibso_chicory_wasm",
+    ],
+)
+
 alias(
     name = "gson",
     actual = "@maven//:com_google_code_gson_gson",
