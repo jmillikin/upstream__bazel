@@ -1,0 +1,8 @@
+module(name = "exec-wasm-example")
+
+toml_to_json = use_repo_rule("//:toml_to_json.bzl", "toml_to_json")
+
+toml_to_json(
+    name = "toml_to_json",
+    toml = "//:example.toml",
+)

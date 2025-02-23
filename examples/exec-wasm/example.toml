@@ -1,0 +1,33 @@
+manifest-version = "2"
+date = "2025-02-20"
+[pkg.cargo]
+version = "0.86.0 (d73d2caf9 2024-12-31)"
+git_commit_hash = "4d91de4e48198da2e33413efdcd9cd2cc0c46688"
+[pkg.cargo.target.aarch64-apple-darwin]
+available = true
+url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-apple-darwin.tar.gz"
+hash = "b280ffddaefd6ce6979390ccdadfbb222eebcb85d070286bff56c8fb016ada30"
+xz_url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-apple-darwin.tar.xz"
+xz_hash = "d67766fb2e62214b3ee3faf01dcddddcb48e8d0483c2bb3475a16cb96210afed"
+
+[pkg.cargo.target.aarch64-pc-windows-msvc]
+available = true
+url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-pc-windows-msvc.tar.gz"
+hash = "0c372f879fe4f091188b81ddf9d92b99068fa708b0b69d18fdb5b7cef3871440"
+xz_url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-pc-windows-msvc.tar.xz"
+xz_hash = "c6d783396ccc8da0fb650d0d8984a5a36c17f963353653f1b3c665f88d50e704"
+
+[pkg.cargo.target.aarch64-unknown-linux-gnu]
+available = true
+url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-unknown-linux-gnu.tar.gz"
+hash = "08fd45dd98dc1f60084e1156c0982e5f3d564a6da0d738f4a4a528c8f8dc8299"
+xz_url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-unknown-linux-gnu.tar.xz"
+xz_hash = "cdebe48b066d512d664c13441e8fae2d0f67106c2080aa44289d98b24192b8bc"
+
+[pkg.cargo.target.aarch64-unknown-linux-musl]
+available = true
+url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-unknown-linux-musl.tar.gz"
+hash = "9e6b80ed0c3d9d7faf1a5e1c7f6b970af7b4b89ef8034092dfc4a29d032a1cca"
+xz_url = "https://static.rust-lang.org/dist/2025-02-20/cargo-1.85.0-aarch64-unknown-linux-musl.tar.xz"
+xz_hash = "4d3e2c4897af9e9bb1e77c7916fd0346eeb5bfe2fab3f9af9fe6858d93738284"
+
