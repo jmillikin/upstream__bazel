@@ -1988,6 +1988,133 @@ the same path on case-insensitive filesystems.
   }
 
   @StarlarkMethod(
+      name = "load_wasm",
+      doc = "TODO",
+      useStarlarkThread = true,
+      parameters = {
+        @Param(
+            name = "path",
+            positional = true,
+            named = true,
+            allowedTypes = {
+              @ParamType(type = String.class),
+              @ParamType(type = Label.class),
+              @ParamType(type = StarlarkPath.class)
+            },
+            doc = "TODO"),
+        @Param(
+            name = "allocate_fn",
+            defaultValue = "'bazel_wasm_allocate'",
+            positional = false,
+            named = true,
+            doc = "TODO"),
+        @Param(
+            name = "watch",
+            defaultValue = "'auto'",
+            positional = false,
+            named = true,
+            doc = "TODO")
+      })
+    public StarlarkWasmModule loadWasm(
+      Object path,
+      String allocateFn,
+      String watch,
+      StarlarkThread thread)
+      throws EvalException, RepositoryFunctionException, InterruptedException {
+    StarlarkPath p = getPath(path);
+
+    WorkspaceRuleEvent w =
+        WorkspaceRuleEvent.newLoadWasmEvent(
+            p.toString(),
+            allocateFn,
+            identifyingStringForLogging,
+            thread.getCallerLocation());
+    env.getListener().post(w);
+    maybeWatch(p, ShouldWatch.fromString(watch));
+
+    try {
+      byte[] moduleContent = FileSystemUtils.readContent(p.getPath());
+      return new StarlarkWasmModule(p, moduleContent, allocateFn);
+    } catch (IOException e) {
+      throw new RepositoryFunctionException(e, Transience.TRANSIENT);
+    }
+  }
+
+  @StarlarkMethod(
+      name = "execute_wasm",
+      doc = "TODO",
+      useStarlarkThread = true,
+      parameters = {
+        @Param(
+            name = "module",
+            positional = true,
+            named = true,
+            allowedTypes = {
+              @ParamType(type = String.class),
+              @ParamType(type = Label.class),
+              @ParamType(type = StarlarkPath.class),
+              @ParamType(type = StarlarkWasmModule.class)
+            },
+            doc = "TODO"),
+        @Param(
+            name = "function",
+            positional = true,
+            named = true,
+            doc = "TODO"),
+        @Param(
+            name = "input",
+            defaultValue = "''",
+            positional = false,
+            named = true,
+            doc = "TODO"),
+        @Param(
+            name = "watch",
+            defaultValue = "'auto'",
+            positional = false,
+            named = true,
+            doc = "TODO")
+      })
+    public StarlarkWasmExecutionResult executeWasm(
+      Object pathOrModule,
+      String function,
+      String input,
+      String watch,
+      StarlarkThread thread)
+      throws EvalException, RepositoryFunctionException, InterruptedException {
+    StarlarkPath path = null;
+    StarlarkWasmModule wasmModule = null;
+    switch (pathOrModule) {
+      case StarlarkWasmModule m:
+        wasmModule = m;
+        path = wasmModule.getPath();
+        break;
+      default:
+        path = getPath(pathOrModule);
+        break;
+    };
+
+    WorkspaceRuleEvent w =
+        WorkspaceRuleEvent.newExecuteWasmEvent(
+            path.toString(),
+            function,
+            input,
+            identifyingStringForLogging,
+            thread.getCallerLocation());
+    env.getListener().post(w);
+
+    try {
+      if (wasmModule == null) {
+        maybeWatch(path, ShouldWatch.fromString(watch));
+        byte[] moduleContent = FileSystemUtils.readContent(path.getPath());
+        wasmModule = new StarlarkWasmModule(path, moduleContent);
+      }
+      return wasmModule.execute(function, input.getBytes(ISO_8859_1));
+    } catch (IOException e) {
+      throw new RepositoryFunctionException(e, Transience.TRANSIENT);
+    }
+  }
+
+  @StarlarkMethod(
       name = "which",
       doc =
           """

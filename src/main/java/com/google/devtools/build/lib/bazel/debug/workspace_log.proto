@@ -149,6 +149,17 @@ message WhichEvent {
   string program = 1;
 }
 
+message LoadWasmEvent {
+  string path = 1;
+  string allocate_fn = 2;
+}
+
+message ExecuteWasmEvent {
+  string path = 1;
+  string function = 2;
+  string input = 3;
+}
+
 message WorkspaceEvent {
   // Location in the code (.bzl file) where the event originates.
   string location = 1;
@@ -171,5 +182,7 @@ message WorkspaceEvent {
     DeleteEvent delete_event = 13;
     PatchEvent patch_event = 14;
     RenameEvent rename_event = 15;
+    LoadWasmEvent load_wasm_event = 16;
+    ExecuteWasmEvent execute_wasm_event = 17;
   }
 }

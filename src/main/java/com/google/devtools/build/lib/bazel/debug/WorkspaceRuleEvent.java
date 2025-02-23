@@ -14,8 +14,10 @@
 package com.google.devtools.build.lib.bazel.debug;
 
 import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos;
+import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.ExecuteWasmEvent;
 import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.ExtractEvent;
 import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.FileEvent;
+import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.LoadWasmEvent;
 import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.OsEvent;
 import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.RenameEvent;
 import com.google.devtools.build.lib.bazel.debug.proto.WorkspaceLogProtos.SymlinkEvent;
@@ -333,6 +335,52 @@ public final class WorkspaceRuleEvent implements Postable {
     WorkspaceLogProtos.WorkspaceEvent.Builder result =
         WorkspaceLogProtos.WorkspaceEvent.newBuilder();
     result = result.setWhichEvent(e);
+    if (location != null) {
+      result = result.setLocation(location.toString());
+    }
+    if (context != null) {
+      result = result.setContext(context);
+    }
+    return new WorkspaceRuleEvent(result.build());
+  }
+
+  public static WorkspaceRuleEvent newLoadWasmEvent(
+      String path,
+      String allocateFn,
+      String context,
+      Location location) {
+    LoadWasmEvent e =
+        WorkspaceLogProtos.LoadWasmEvent.newBuilder()
+            .setPath(path)
+            .setAllocateFn(allocateFn)
+            .build();
+    WorkspaceLogProtos.WorkspaceEvent.Builder result =
+        WorkspaceLogProtos.WorkspaceEvent.newBuilder();
+    result = result.setLoadWasmEvent(e);
+    if (location != null) {
+      result = result.setLocation(location.toString());
+    }
+    if (context != null) {
+      result = result.setContext(context);
+    }
+    return new WorkspaceRuleEvent(result.build());
+  }
+
+  public static WorkspaceRuleEvent newExecuteWasmEvent(
+      String path,
+      String function,
+      String input,
+      String context,
+      Location location) {
+    ExecuteWasmEvent e =
+        WorkspaceLogProtos.ExecuteWasmEvent.newBuilder()
+            .setPath(path)
+            .setFunction(function)
+            .setInput(input)
+            .build();
+    WorkspaceLogProtos.WorkspaceEvent.Builder result =
+        WorkspaceLogProtos.WorkspaceEvent.newBuilder();
+    result = result.setExecuteWasmEvent(e);
     if (location != null) {
       result = result.setLocation(location.toString());
     }
